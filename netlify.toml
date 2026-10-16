@@ -1,0 +1,4 @@
+# The site is prebuilt by build.py, so Netlify only publishes the public folder.
+# Domain redirects (.ca to .com) live in public/_redirects.
+[build]
+  publish = "public"
