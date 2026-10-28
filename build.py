@@ -79,6 +79,9 @@ def layout(*, title, description, path, active, body, og_type="website"):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js')</script>
+<meta name="theme-color" content="#F7F8FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1422" media="(prefers-color-scheme: dark)">
 <title>{esc(full_title)}</title>
 <meta name="description" content="{esc(description)}">
 <link rel="canonical" href="{SITE}{path}">
@@ -104,7 +107,8 @@ def layout(*, title, description, path, active, body, og_type="website"):
       <span class="wordmark-name">{NAME}</span>
       <span class="wordmark-post">EdD, LLM, MBA</span>
     </a>
-    <nav class="tabs" aria-label="Main">
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="menu-icon" aria-hidden="true"></span><span class="menu-label">Menu</span></button>
+    <nav class="tabs" id="site-nav" aria-label="Main">
       <ul>
 {nav}
       </ul>

@@ -1,24 +1,40 @@
 (function () {
-  // Keep the current tab visible in the scrolling tab bar on phones.
-  var scroller = document.querySelector('.tabs ul');
-  var current = document.querySelector('.tabs a[aria-current="page"]');
-  if (scroller && current) {
-    var item = current.parentNode;
-    if (item.offsetLeft + item.offsetWidth > scroller.clientWidth) {
-      scroller.scrollLeft = Math.max(0, item.offsetLeft - 16);
-    }
+  // Menu button on phones and tablets: opens and closes the list of tabs.
+  var header = document.querySelector('.site-header');
+  var btn = document.querySelector('.menu-btn');
+  if (header && btn) {
+    var label = btn.querySelector('.menu-label');
+    var setOpen = function (open) {
+      header.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (label) label.textContent = open ? 'Close' : 'Menu';
+    };
+    btn.addEventListener('click', function () {
+      setOpen(!header.classList.contains('open'));
+    });
+    document.addEventListener('click', function (e) {
+      if (header.classList.contains('open') && !header.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && header.classList.contains('open')) {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+    // Close the menu when returning to a page with the Back button.
+    window.addEventListener('pageshow', function () { setOpen(false); });
   }
 
   // Copy buttons (email address, speaker bio).
-  Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function (btn) {
-    var target = document.getElementById(btn.getAttribute('data-copy'));
+  Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function (copyBtn) {
+    var target = document.getElementById(copyBtn.getAttribute('data-copy'));
     if (!target) return;
-    var original = btn.textContent;
-    btn.addEventListener('click', function () {
+    var original = copyBtn.textContent;
+    copyBtn.addEventListener('click', function () {
       var text = (target.innerText || target.textContent).trim();
-      function done(label) {
-        btn.textContent = label;
-        setTimeout(function () { btn.textContent = original; }, 2000);
+      function done(text) {
+        copyBtn.textContent = text;
+        setTimeout(function () { copyBtn.textContent = original; }, 2000);
       }
       function selectIt() {
         try {
